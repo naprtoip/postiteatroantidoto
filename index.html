@@ -6,7 +6,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Teatro Antidoto">
-<!-- URL app: https://TUO_USERNAME_GITHUB.github.io/postiteatroantidoto -->
+<!-- URL app: https://naprtoip.github.io/postiteatroantidoto -->
 <title>Teatro Antidoto — Prenotazioni</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -296,6 +296,14 @@ async function sha256hex(str) {
 window.addEventListener('DOMContentLoaded', async () => {
   // Prova sessione salvata
   const saved = sessionStorage.getItem('teatro_utente');
+  try {
+    // Test connessione rapido
+    await fetch(`${SUPA_URL}/rest/v1/spettacoli?select=id&limit=1`, {
+      headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}
+    });
+  } catch(e) {
+    // Continua comunque — mostrerà errore al login
+  }
   if (saved) {
     utente = JSON.parse(saved);
     await avviaApp();
@@ -329,7 +337,15 @@ async function doLogin() {
 
   btn.textContent = 'ACCEDI'; btn.disabled = false;
 
-  if (!r.ok || !r.data || r.data.length === 0) {
+  if (!r.ok) {
+    if (r.status === 404 || (r.data && JSON.stringify(r.data).includes('does not exist'))) {
+      errEl.textContent = '⚠ Database non ancora configurato. Esegui il SQL su Supabase.';
+    } else {
+      errEl.textContent = 'Errore di connessione. Verifica la rete.';
+    }
+    return;
+  }
+  if (!r.data || r.data.length === 0) {
     errEl.textContent = 'Credenziali non valide o utente non attivo';
     return;
   }
