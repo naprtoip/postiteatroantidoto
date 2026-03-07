@@ -6,180 +6,172 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Teatro Antidoto">
-<!-- URL app: https://naprtoip.github.io/postiteatroantidoto -->
 <title>Teatro Antidoto — Prenotazioni</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#1e1e2e;--card:#2b2b3b;--accent:#00d1ff;
   --green:#2ecc71;--red:#e74c3c;--yellow:#f1c40f;
-  --text:#eeeeee;--muted:#888888;
+  --purple:#8e44ad;--text:#eeeeee;--muted:#888888;
 }
 body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
 
-/* ── TOPBAR ── */
 .topbar{background:var(--card);padding:10px 14px;display:flex;align-items:center;
   justify-content:space-between;position:sticky;top:0;z-index:100;
   border-bottom:2px solid var(--accent);box-shadow:0 2px 12px #0008}
 .topbar-title{color:var(--accent);font-size:1.05em;font-weight:700;letter-spacing:.3px}
 .topbar-sub{color:var(--muted);font-size:.72em;margin-top:1px}
 .topbar-right{display:flex;align-items:center;gap:8px}
-.btn-logout{background:var(--red);color:#fff;border:none;border-radius:6px;
-  padding:6px 12px;font-size:.8em;cursor:pointer;font-weight:600}
-.pill{background:#333;color:var(--accent);border-radius:12px;
-  padding:3px 10px;font-size:.72em;font-weight:600}
+.btn-logout{background:var(--red);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:.8em;cursor:pointer;font-weight:600}
+.pill{background:#333;color:var(--accent);border-radius:12px;padding:3px 10px;font-size:.72em;font-weight:600}
 .pill.online{background:#1a3a2a;color:var(--green)}
 .pill.offline{background:#3a1a1a;color:var(--red)}
 
-/* ── LOGIN ── */
-#pg-login{display:flex;align-items:center;justify-content:center;
-  min-height:100vh;padding:20px}
-.login-card{background:var(--card);border-radius:16px;padding:32px 24px;
-  width:100%;max-width:340px;border:1px solid #333}
+.btn-mic-top{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:7px 13px;font-size:1em;cursor:pointer;display:flex;align-items:center;gap:5px;font-weight:600;letter-spacing:.3px;transition:background .15s;white-space:nowrap}
+.btn-mic-top:active{background:#6c3483}
+.btn-mic-top.listening{background:#c0392b;animation:pulse-red 1s infinite}
+@keyframes pulse-red{0%,100%{opacity:1}50%{opacity:.6}}
+
+#pg-login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-card{background:var(--card);border-radius:16px;padding:32px 24px;width:100%;max-width:340px;border:1px solid #333}
 .login-logo{text-align:center;font-size:2.5em;margin-bottom:8px}
 .login-card h2{color:var(--accent);font-size:1.2em;text-align:center;margin-bottom:4px}
 .login-card .sub{color:var(--muted);font-size:.78em;text-align:center;margin-bottom:24px}
 .field{margin-bottom:14px}
 .field label{display:block;color:var(--muted);font-size:.8em;margin-bottom:5px;font-weight:600;letter-spacing:.3px}
-.field input{width:100%;background:var(--bg);border:1px solid #444;border-radius:8px;
-  color:var(--text);font-size:1em;padding:12px 14px;outline:none;transition:border-color .2s}
+.field input{width:100%;background:var(--bg);border:1px solid #444;border-radius:8px;color:var(--text);font-size:1em;padding:12px 14px;outline:none;transition:border-color .2s}
 .field input:focus{border-color:var(--accent)}
-.btn-main{width:100%;padding:14px;background:var(--accent);color:#000;border:none;
-  border-radius:10px;font-size:1.05em;font-weight:700;cursor:pointer;
-  margin-top:8px;transition:opacity .15s}
+.btn-main{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:10px;font-size:1.05em;font-weight:700;cursor:pointer;margin-top:8px;transition:opacity .15s}
 .btn-main:active{opacity:.8}
 .err-msg{color:var(--red);font-size:.83em;text-align:center;margin-top:10px;min-height:18px}
 .login-footer{color:#2a2a3a;font-size:.65em;text-align:center;margin-top:24px}
 
-/* ── APP ── */
 #pg-app{min-height:100vh}
-
-/* ── SPETTACOLO SELECTOR ── */
 .section{padding:12px 14px}
-.section-title{color:var(--accent);font-size:.82em;font-weight:700;
-  letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase}
+.section-title{color:var(--accent);font-size:.82em;font-weight:700;letter-spacing:.5px;margin-bottom:8px;text-transform:uppercase}
 .sel-wrap{position:relative}
-select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius:10px;
-  color:var(--text);font-size:.95em;padding:11px 36px 11px 12px;
-  outline:none;appearance:none;cursor:pointer}
-.sel-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  color:var(--accent);pointer-events:none;font-size:.8em}
+select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius:10px;color:var(--text);font-size:.95em;padding:11px 36px 11px 12px;outline:none;appearance:none;cursor:pointer}
+.sel-arrow{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--accent);pointer-events:none;font-size:.8em}
 
-/* ── STATO SYNC ── */
-.sync-bar{background:var(--card);border-radius:8px;padding:8px 12px;
-  margin:0 14px 4px;display:flex;align-items:center;gap:8px;font-size:.78em}
+.sync-bar{background:var(--card);border-radius:8px;padding:8px 12px;margin:0 14px 4px;display:flex;align-items:center;gap:8px;font-size:.78em}
 .sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sync-dot.ok{background:var(--green)}
-.sync-dot.err{background:var(--red)}
+.sync-dot.ok{background:var(--green)}.sync-dot.err{background:var(--red)}
 .sync-dot.loading{background:var(--yellow);animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .sync-txt{color:var(--muted);flex:1}
-.btn-refresh{background:#333;border:none;border-radius:6px;color:var(--accent);
-  padding:4px 10px;font-size:.75em;cursor:pointer}
+.btn-refresh{background:#333;border:none;border-radius:6px;color:var(--accent);padding:4px 10px;font-size:.75em;cursor:pointer}
 
-/* ── MAPPA ── */
-.mappa-wrap{padding:8px 6px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.fila-row{display:flex;align-items:center;margin-bottom:4px}
+/* MAPPA ZOOM */
+.mappa-outer{overflow:auto;-webkit-overflow-scrolling:touch;padding:8px 6px 16px;touch-action:pan-x pan-y}
+.mappa-zoom{transform-origin:top left;display:inline-block;min-width:100%}
+
+/* BLOCCHI */
+.palco-label{text-align:center;color:var(--accent);font-size:.8em;font-weight:700;letter-spacing:5px;padding:4px 0 10px}
+.platea-gap{height:20px;display:flex;align-items:center;padding:0 22px;margin:4px 0}
+.platea-gap-line{flex:1;height:1px;background:#2a2a4a}
+.platea-gap-lbl{color:#3a3a5a;font-size:.6em;letter-spacing:3px;padding:0 10px;white-space:nowrap}
+
+.fila-row{display:flex;align-items:center;margin-bottom:3px}
 .fila-lbl{width:20px;color:var(--muted);font-size:.7em;text-align:center;flex-shrink:0;font-weight:700}
 .posti-group{display:flex;flex-wrap:nowrap;gap:2px}
 .gap-centrale{width:14px;flex-shrink:0}
-.posto{width:32px;height:32px;border-radius:6px;border:none;margin:1px;
-  font-size:.68em;font-weight:700;cursor:pointer;color:#000;
-  transition:transform .1s,opacity .15s;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center}
-.posto:active{transform:scale(.88)}
-.posto.libero{background:var(--green)}
-.posto.occupato{background:var(--red);cursor:not-allowed;color:#fff;opacity:.85}
-.posto.mio{background:var(--yellow)}
+
+.posto{width:30px;height:30px;border-radius:5px;border:none;margin:1px;font-size:.65em;font-weight:700;cursor:pointer;color:#000;transition:transform .1s,opacity .15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.posto:active{transform:scale(.86)}
+.posto.libero{background:var(--green)}.posto.occupato{background:var(--red);cursor:not-allowed;color:#fff;opacity:.85}
+.posto.mio{background:var(--yellow)}.posto.voice-target{background:#a78bfa;animation:blink-p .5s infinite;color:#000}
+@keyframes blink-p{0%,100%{opacity:1}50%{opacity:.3}}
+
 .legenda{display:flex;gap:14px;padding:4px 14px 8px;flex-wrap:wrap}
 .leg-item{display:flex;align-items:center;gap:5px;font-size:.72em;color:var(--muted)}
 .leg-dot{width:12px;height:12px;border-radius:3px}
 
-/* ── DIALOG CONFERMA ── */
-.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;
-  background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;
-  padding:20px}
+/* DIALOG MANUALE */
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:20px}
 .overlay.show{display:flex}
-.dialog{background:var(--card);border-radius:16px;padding:24px 20px 28px;
-  width:100%;max-width:440px;border:2px solid var(--accent)}
-.dialog-handle{width:40px;height:4px;background:#444;border-radius:2px;
-  margin:0 auto 18px}
+.dialog{background:var(--card);border-radius:16px;padding:24px 20px 28px;width:100%;max-width:440px;border:2px solid var(--accent)}
+.dialog-handle{width:40px;height:4px;background:#444;border-radius:2px;margin:0 auto 18px}
 .dialog h3{color:var(--accent);margin-bottom:10px;font-size:1em}
-.posto-badge{background:var(--bg);border-radius:10px;padding:12px;text-align:center;
-  margin-bottom:16px;border:1px solid #333}
+.posto-badge{background:var(--bg);border-radius:10px;padding:12px;text-align:center;margin-bottom:16px;border:1px solid #333}
 .posto-badge .spett{color:var(--muted);font-size:.75em;margin-bottom:4px}
 .posto-badge .coord{color:var(--yellow);font-size:1.25em;font-weight:700;letter-spacing:1px}
-.input-nome{width:100%;background:var(--bg);border:1.5px solid #444;border-radius:10px;
-  color:var(--text);font-size:1.05em;padding:13px 14px;outline:none;
-  margin-bottom:14px;transition:border-color .2s}
+.input-nome{width:100%;background:var(--bg);border:1.5px solid #444;border-radius:10px;color:var(--text);font-size:1.05em;padding:13px 14px;outline:none;margin-bottom:14px;transition:border-color .2s}
 .input-nome:focus{border-color:var(--accent)}
 .input-nome.shake{animation:shake .3s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .dlg-btns{display:flex;gap:10px}
-.btn-cancel{flex:1;padding:13px;background:#444;color:#fff;border:none;
-  border-radius:10px;font-weight:700;font-size:.95em;cursor:pointer}
-.btn-confirm{flex:1;padding:13px;background:var(--green);color:#000;border:none;
-  border-radius:10px;font-weight:700;font-size:.95em;cursor:pointer;
-  transition:opacity .15s}
+.btn-cancel{flex:1;padding:13px;background:#444;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.95em;cursor:pointer}
+.btn-confirm{flex:1;padding:13px;background:var(--green);color:#000;border:none;border-radius:10px;font-weight:700;font-size:.95em;cursor:pointer;transition:opacity .15s}
 .btn-confirm:disabled{opacity:.5;cursor:not-allowed}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);
-  padding:12px 22px;border-radius:24px;font-weight:700;z-index:300;
-  font-size:.9em;opacity:0;transition:opacity .25s,transform .25s;
-  white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.ok{background:var(--green);color:#000}
-.toast.ko{background:var(--red);color:#fff}
+/* PANNELLO VOCALE */
+.voice-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300}
+.voice-backdrop.show{display:block}
+.voice-panel{position:fixed;bottom:0;left:0;right:0;z-index:301;background:var(--card);border-radius:20px 20px 0 0;padding:20px 18px 36px;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,1,.55,1);max-height:92vh;overflow-y:auto;border-top:2px solid var(--purple)}
+.voice-panel.open{transform:translateY(0)}
+.vp-handle{width:40px;height:4px;background:#555;border-radius:2px;margin:0 auto 16px}
+.vp-title{color:var(--purple);font-size:1em;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.vp-title .mic-ico{font-size:1.3em;transition:all .2s}
 
-/* ── LOADING SCREEN ── */
-#pg-loading{display:flex;align-items:center;justify-content:center;
-  min-height:100vh;flex-direction:column;gap:16px}
-.spinner{width:36px;height:36px;border:3px solid #333;border-top-color:var(--accent);
-  border-radius:50%;animation:spin .8s linear infinite}
+.tts-bar{font-size:.73em;color:var(--muted);min-height:20px;display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.tts-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse .7s infinite;flex-shrink:0}
+
+/* step */
+.vstep{margin-bottom:13px}
+.vstep-label{font-size:.73em;color:var(--muted);font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.snum{background:var(--purple);color:#fff;border-radius:50%;width:18px;height:18px;font-size:.7em;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;transition:background .3s}
+.snum.done{background:var(--green)}.snum.active{background:var(--accent);animation:pulse .8s infinite}
+.vstep-row{display:flex;gap:6px;align-items:center}
+.vstep-inp{flex:1;background:var(--bg);border:1.5px solid #444;border-radius:10px;color:var(--text);font-size:.95em;padding:11px 12px;outline:none;transition:border-color .2s;font-family:inherit}
+.vstep-inp:focus{border-color:var(--accent)}.vstep-inp.valid{border-color:var(--green)}.vstep-inp.invalid{border-color:var(--red)}
+.vstep-inp.cur{border-color:var(--purple)}.vstep-inp:disabled{opacity:.4;background:#18182a}
+.btn-remic{background:#3d3d5c;border:none;border-radius:8px;color:var(--accent);padding:10px;font-size:.95em;cursor:pointer;flex-shrink:0;transition:background .15s}
+.btn-remic:disabled{opacity:.35;cursor:not-allowed}.btn-remic.listening{background:var(--red);animation:pulse-red 1s infinite}
+
+.vstep-confirm{background:var(--bg);border:1.5px solid var(--yellow);border-radius:10px;padding:12px 14px;font-size:.88em;color:var(--yellow);margin-bottom:8px;line-height:1.5}
+.yesno{display:flex;gap:10px;margin-top:6px}
+.btn-yes{flex:1;padding:12px;background:var(--green);color:#000;border:none;border-radius:10px;font-weight:800;font-size:.95em;cursor:pointer}
+.btn-no{flex:1;padding:12px;background:#555;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:.95em;cursor:pointer}
+
+.vp-actions{display:flex;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid #333}
+.btn-vcommit{flex:1;padding:14px;background:var(--accent);color:#000;border:none;border-radius:12px;font-weight:800;font-size:1em;cursor:pointer}
+.btn-vcommit:disabled{opacity:.35;cursor:not-allowed}
+.btn-vcancel{padding:14px 18px;background:#444;color:#fff;border:none;border-radius:12px;font-weight:700;cursor:pointer}
+
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);padding:12px 22px;border-radius:24px;font-weight:700;z-index:400;font-size:.9em;opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:var(--green);color:#000}.toast.ko{background:var(--red);color:#fff}
+
+#pg-loading{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px}
+.spinner{width:36px;height:36px;border:3px solid #333;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-txt{color:var(--muted);font-size:.9em}
 </style>
 </head>
 <body>
 
-<!-- LOADING -->
-<div id="pg-loading">
-  <div class="spinner"></div>
-  <div class="loading-txt">Connessione al cloud...</div>
-</div>
+<div id="pg-loading"><div class="spinner"></div><div class="loading-txt">Connessione al cloud...</div></div>
 
-<!-- LOGIN -->
 <div id="pg-login" style="display:none">
   <div class="login-card">
     <div class="login-logo">🎭</div>
     <h2>Teatro Antidoto</h2>
     <p class="sub">Accedi per gestire le prenotazioni</p>
-    <div class="field">
-      <label>USERNAME</label>
-      <input id="inp-usr" type="text" autocomplete="username"
-             autocapitalize="none" autocorrect="off" spellcheck="false"
-             placeholder="es. mario">
-    </div>
-    <div class="field">
-      <label>PASSWORD</label>
-      <input id="inp-pwd" type="password" autocomplete="current-password"
-             placeholder="••••••••">
-    </div>
+    <div class="field"><label>USERNAME</label>
+      <input id="inp-usr" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="es. mario"></div>
+    <div class="field"><label>PASSWORD</label>
+      <input id="inp-pwd" type="password" autocomplete="current-password" placeholder="••••••••"></div>
     <button class="btn-main" id="btn-login" onclick="doLogin()">ACCEDI</button>
     <div class="err-msg" id="login-err"></div>
     <div class="login-footer">ideato da Francesco Falci</div>
   </div>
 </div>
 
-<!-- APP PRINCIPALE -->
 <div id="pg-app" style="display:none">
   <div class="topbar">
-    <div>
-      <div class="topbar-title">🎭 Teatro Antidoto</div>
-      <div class="topbar-sub" id="lbl-utente"></div>
-    </div>
+    <div><div class="topbar-title">🎭 Teatro Antidoto</div><div class="topbar-sub" id="lbl-utente"></div></div>
     <div class="topbar-right">
+      <button class="btn-mic-top" id="btn-mic-top" onclick="apriVoce()">🎙 VOCE</button>
       <span class="pill offline" id="pill-conn">⬤ offline</span>
       <button class="btn-logout" onclick="doLogout()">Esci</button>
     </div>
@@ -204,17 +196,20 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
   <div class="legenda">
     <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div>Libero</div>
     <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div>Occupato</div>
-    <div class="leg-item"><div class="leg-dot" style="background:var(--yellow)"></div>Prenotato da me</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--yellow)"></div>Mio</div>
+    <div class="leg-item"><div class="leg-dot" style="background:#a78bfa"></div>Voce</div>
   </div>
 
-  <div class="mappa-wrap" id="mappa-wrap">
-    <div style="text-align:center;color:var(--muted);padding:40px;font-size:.9em">
-      Seleziona uno spettacolo per vedere la platea
+  <div class="mappa-outer" id="mappa-outer">
+    <div class="mappa-zoom" id="mappa-zoom">
+      <div id="mappa-wrap">
+        <div style="text-align:center;color:var(--muted);padding:40px;font-size:.9em">Seleziona uno spettacolo per vedere la platea</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- DIALOG CONFERMA -->
+<!-- dialog manuale -->
 <div class="overlay" id="overlay" onclick="onOverlayClick(event)">
   <div class="dialog" id="dialog-box">
     <div class="dialog-handle"></div>
@@ -223,9 +218,7 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
       <div class="spett" id="dlg-spett"></div>
       <div class="coord" id="dlg-coord"></div>
     </div>
-    <input class="input-nome" id="dlg-nome" type="text"
-           placeholder="Cognome Nome cliente"
-           autocapitalize="words" autocorrect="off">
+    <input class="input-nome" id="dlg-nome" type="text" placeholder="Cognome Nome cliente" autocapitalize="words" autocorrect="off">
     <div class="dlg-btns">
       <button class="btn-cancel" onclick="chiudiDialog()">Annulla</button>
       <button class="btn-confirm" id="btn-confirm" onclick="confermaPosto()">PRENOTA</button>
@@ -233,445 +226,483 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
   </div>
 </div>
 
+<!-- pannello vocale -->
+<div class="voice-backdrop" id="voice-backdrop" onclick="chiudiVoce()"></div>
+<div class="voice-panel" id="voice-panel">
+  <div class="vp-handle"></div>
+  <div class="vp-title"><span class="mic-ico" id="mic-ico">🎙</span> Prenotazione guidata</div>
+  <div class="tts-bar" id="tts-bar"></div>
+
+  <!-- step 1: spettacolo -->
+  <div class="vstep" id="vstep-spett">
+    <div class="vstep-label"><span class="snum" id="sn1">1</span>Spettacolo</div>
+    <div class="vstep-row">
+      <input class="vstep-inp" id="vi-spett" type="text" placeholder="nome spettacolo" autocorrect="off" autocapitalize="none" oninput="onInputSpett()">
+      <button class="btn-remic" id="rm-spett" onclick="ascolta('spett')" title="Ascolta">🎙</button>
+    </div>
+  </div>
+
+  <!-- step 2: fila -->
+  <div class="vstep" id="vstep-fila">
+    <div class="vstep-label"><span class="snum" id="sn2">2</span>Fila (lettera)</div>
+    <div class="vstep-row">
+      <input class="vstep-inp" id="vi-fila" type="text" maxlength="2" placeholder="es. B" autocorrect="off" autocapitalize="characters" oninput="onInputFila()">
+      <button class="btn-remic" id="rm-fila" onclick="ascolta('fila')" title="Ascolta">🎙</button>
+    </div>
+  </div>
+
+  <!-- step 3: posto -->
+  <div class="vstep" id="vstep-posto">
+    <div class="vstep-label"><span class="snum" id="sn3">3</span>Numero posto</div>
+    <div class="vstep-row">
+      <input class="vstep-inp" id="vi-posto" type="number" min="1" max="22" placeholder="es. 12" oninput="onInputPosto()">
+      <button class="btn-remic" id="rm-posto" onclick="ascolta('posto')" title="Ascolta">🎙</button>
+    </div>
+  </div>
+
+  <!-- step 4: conferma -->
+  <div class="vstep" id="vstep-conf" style="display:none">
+    <div class="vstep-label"><span class="snum" id="sn4">4</span>Conferma</div>
+    <div class="vstep-confirm" id="conf-msg"></div>
+    <div class="yesno">
+      <button class="btn-yes" onclick="voiceSi()">✔ SÌ, confermo</button>
+      <button class="btn-no" onclick="voiceNo()">✖ No, cambia posto</button>
+    </div>
+  </div>
+
+  <!-- step 5: nome -->
+  <div class="vstep" id="vstep-nome" style="display:none">
+    <div class="vstep-label"><span class="snum" id="sn5">5</span>Cognome e Nome spettatore</div>
+    <div class="vstep-row">
+      <input class="vstep-inp" id="vi-nome" type="text" placeholder="ROSSI MARIO" autocapitalize="words" autocorrect="off" oninput="aggiornaCommit()">
+      <button class="btn-remic" id="rm-nome" onclick="ascolta('nome')" title="Ascolta">🎙</button>
+    </div>
+  </div>
+
+  <div class="vp-actions">
+    <button class="btn-vcommit" id="btn-vcommit" onclick="voiceCommit()" disabled>PRENOTA</button>
+    <button class="btn-vcancel" onclick="chiudiVoce()">Annulla</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  CONFIGURAZIONE — sostituisci con i tuoi valori
-// ══════════════════════════════════════════════════════
 const SUPA_URL = 'https://hiztxijyrghfjppyjpvw.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhpenR4aWp5cmdoZmpwcHlqcHZ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MjcwMDYsImV4cCI6MjA4ODQwMzAwNn0.u-wn65728r3fCbBTqT-5iDPiT5nsz83aDJLM03mDcXw';
 
-// ══════════════════════════════════════════════════════
-//  STATO GLOBALE
-// ══════════════════════════════════════════════════════
-let utente = null;          // {username}
-let spettAttu = '';
-let mappaCorrente = [];     // array righe × colonne (null o nome)
-let letFila = [];           // ['A','B','C',...]
-let configFile = [];        // [{sx:[],dx:[]}]
-let miePrenotazioni = new Set(); // "riga,col"
-let postoSel = null;        // {r,c,fila,num}
-let realtimeSub = null;
-let ultimoId = 0;
-let pollTimer = null;
+// stato
+let utente=null, spettAttu='', letFila=[], configFile=[];
+let miePrenotazioni=new Set(), postoSel=null, ultimoId=0, pollTimer=null;
 
-// ══════════════════════════════════════════════════════
-//  SUPABASE REST HELPERS
-// ══════════════════════════════════════════════════════
-async function supa(method, table, {body, params='', prefer='return=representation'}={}) {
-  const url = `${SUPA_URL}/rest/v1/${table}${params ? '?' + params : ''}`;
-  const hdrs = {
-    'apikey': SUPA_KEY,
-    'Authorization': `Bearer ${SUPA_KEY}`,
-    'Content-Type': 'application/json',
-    'Prefer': prefer
-  };
-  try {
-    const res = await fetch(url, {
-      method, headers: hdrs,
-      body: body ? JSON.stringify(body) : undefined
-    });
-    const txt = await res.text();
-    const data = txt ? JSON.parse(txt) : [];
-    return {ok: res.ok, data, status: res.status};
-  } catch(e) {
-    return {ok: false, data: null, error: e.message};
-  }
+// voce
+let voiceStep=0;
+let vSpett='', vFila='', vPosto=null, vR=-1, vC=-1;
+let activeSR=null;
+const TTS=window.speechSynthesis;
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+// ── SUPABASE ──
+async function supa(method,table,{body,params='',prefer='return=representation'}={}) {
+  const url=`${SUPA_URL}/rest/v1/${table}${params?'?'+params:''}`;
+  const hdrs={'apikey':SUPA_KEY,'Authorization':`Bearer ${SUPA_KEY}`,'Content-Type':'application/json','Prefer':prefer};
+  try{
+    const res=await fetch(url,{method,headers:hdrs,body:body?JSON.stringify(body):undefined});
+    const txt=await res.text();
+    return{ok:res.ok,data:txt?JSON.parse(txt):[],status:res.status};
+  }catch(e){return{ok:false,data:null,error:e.message};}
+}
+async function sha256hex(s){
+  const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 
-// ══════════════════════════════════════════════════════
-//  SHA-256 PASSWORD HASH (browser nativo)
-// ══════════════════════════════════════════════════════
-async function sha256hex(str) {
-  const buf = await crypto.subtle.digest('SHA-256',
-    new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2,'0')).join('');
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',async()=>{
+  const t=setTimeout(()=>{show('pg-loading',false);show('pg-login',true);},3000);
+  const saved=sessionStorage.getItem('teatro_utente');
+  if(saved){clearTimeout(t);utente=JSON.parse(saved);await avviaApp();}
+  else{clearTimeout(t);show('pg-loading',false);show('pg-login',true);}
+});
+function show(id,vis){document.getElementById(id).style.display=vis?'':' none'.trim();}
+
+// ── LOGIN ──
+async function doLogin(){
+  const usr=document.getElementById('inp-usr').value.trim().toLowerCase();
+  const pwd=document.getElementById('inp-pwd').value;
+  const errEl=document.getElementById('login-err');
+  const btn=document.getElementById('btn-login');
+  if(!usr||!pwd){errEl.textContent='Inserisci username e password';return;}
+  btn.textContent='Accesso...';btn.disabled=true;errEl.textContent='';
+  const hash=await sha256hex(pwd);
+  const r=await supa('GET','utenti_webapp',{params:`select=username&username=eq.${encodeURIComponent(usr)}&password_hash=eq.${hash}&attivo=eq.true`});
+  btn.textContent='ACCEDI';btn.disabled=false;
+  if(!r.ok){errEl.textContent='❌ Errore: '+(r.data?JSON.stringify(r.data).substring(0,80):'HTTP '+r.status);return;}
+  if(!r.data||!r.data.length){errEl.textContent='Credenziali non valide';return;}
+  utente={username:usr};
+  sessionStorage.setItem('teatro_utente',JSON.stringify(utente));
+  show('pg-login',false);await avviaApp();
 }
-
-// ══════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', async () => {
-  // Mostra sempre il login entro 3 secondi, anche se la rete non risponde
-  const timer = setTimeout(() => {
-    show('pg-loading', false);
-    show('pg-login', true);
-  }, 3000);
-
-  const saved = sessionStorage.getItem('teatro_utente');
-  if (saved) {
-    clearTimeout(timer);
-    utente = JSON.parse(saved);
-    await avviaApp();
-  } else {
-    clearTimeout(timer);
-    show('pg-loading', false);
-    show('pg-login', true);
-  }
+function doLogout(){
+  sessionStorage.removeItem('teatro_utente');utente=null;spettAttu='';
+  if(pollTimer)clearInterval(pollTimer);
+  show('pg-app',false);show('pg-login',true);
+  document.getElementById('inp-pwd').value='';
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('pg-login').style.display!=='none')doLogin();
 });
 
-function show(id, vis) {
-  document.getElementById(id).style.display = vis ? '' : 'none';
+// ── AVVIA APP ──
+async function avviaApp(){
+  try{
+    show('pg-loading',false);show('pg-app',true);
+    document.getElementById('lbl-utente').textContent=utente.username;
+    setConn(false);await caricaSpettacoli();avviaPolling();initZoom();
+  }catch(e){show('pg-app',false);show('pg-login',true);document.getElementById('login-err').textContent='Errore: '+e.message;}
+}
+function setConn(ok){
+  const p=document.getElementById('pill-conn');
+  p.textContent=ok?'⬤ online':'⬤ offline';p.className='pill '+(ok?'online':'offline');
 }
 
-// ══════════════════════════════════════════════════════
-//  LOGIN
-// ══════════════════════════════════════════════════════
-async function doLogin() {
-  const usr = document.getElementById('inp-usr').value.trim().toLowerCase();
-  const pwd = document.getElementById('inp-pwd').value;
-  const errEl = document.getElementById('login-err');
-  const btn = document.getElementById('btn-login');
-
-  if (!usr || !pwd) { errEl.textContent = 'Inserisci username e password'; return; }
-
-  btn.textContent = 'Accesso in corso...'; btn.disabled = true;
-  errEl.textContent = '';
-
-  const hash = await sha256hex(pwd);
-  const r = await supa('GET', 'utenti_webapp',
-    {params: `select=username&username=eq.${encodeURIComponent(usr)}&password_hash=eq.${hash}&attivo=eq.true`});
-
-  btn.textContent = 'ACCEDI'; btn.disabled = false;
-
-  if (!r.ok) {
-    const msg = r.data ? JSON.stringify(r.data).substring(0,80) : ('HTTP ' + r.status);
-    if (msg.includes('does not exist') || r.status === 404) {
-      errEl.textContent = '⚠ Tabella utenti non trovata. Esegui supabase_fix.sql';
-    } else {
-      errEl.textContent = '❌ Errore: ' + msg;
-    }
-    console.error('Login error:', r);
-    return;
-  }
-  if (!r.data || r.data.length === 0) {
-    errEl.textContent = 'Credenziali non valide o utente non attivo';
-    return;
-  }
-
-  utente = {username: usr};
-  sessionStorage.setItem('teatro_utente', JSON.stringify(utente));
-  show('pg-login', false);
-  await avviaApp();
-}
-
-function doLogout() {
-  sessionStorage.removeItem('teatro_utente');
-  utente = null; spettAttu = '';
-  if (pollTimer) clearInterval(pollTimer);
-  show('pg-app', false);
-  show('pg-login', true);
-  document.getElementById('inp-pwd').value = '';
-}
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && document.getElementById('pg-login').style.display !== 'none')
-    doLogin();
-});
-
-// ══════════════════════════════════════════════════════
-//  AVVIA APP
-// ══════════════════════════════════════════════════════
-async function avviaApp() {
-  try {
-    show('pg-loading', false);
-    show('pg-app', true);
-    document.getElementById('lbl-utente').textContent = utente.username;
-    setConnStatus(false);
-    await caricaSpettacoli();
-    avviaPolling();
-  } catch(e) {
-    show('pg-app', false);
-    show('pg-login', true);
-    document.getElementById('login-err').textContent = 'Errore app: ' + e.message;
-    console.error('avviaApp error:', e);
-  }
-}
-
-function setConnStatus(online) {
-  const p = document.getElementById('pill-conn');
-  p.textContent = online ? '⬤ online' : '⬤ offline';
-  p.className = 'pill ' + (online ? 'online' : 'offline');
-}
-
-// ══════════════════════════════════════════════════════
-//  SPETTACOLI
-// ══════════════════════════════════════════════════════
-async function caricaSpettacoli() {
-  const r = await supa('GET', 'spettacoli',
-    {params: 'select=nome,ente,data,orario&order=nome'});
-  if (!r.ok || !r.data) {
-    setConnStatus(false);
-    document.getElementById('mappa-wrap').innerHTML =
-      '<div style="color:var(--red);padding:20px;text-align:center;font-size:.9em">'
-      + '❌ Errore connessione Supabase<br><small>' + (r.error||'HTTP '+r.status) + '</small>'
-      + '<br><br><button onclick="caricaSpettacoli()" style="background:#333;color:var(--accent);border:none;padding:8px 16px;border-radius:8px;cursor:pointer">↻ Riprova</button>'
-      + '</div>';
-    return;
-  }
-  setConnStatus(true);
-
-  const sel = document.getElementById('sel-spett');
-  const prec = sel.value;
-  sel.innerHTML = '<option value="">— scegli uno spettacolo —</option>';
-  r.data.forEach(sp => {
-    const o = document.createElement('option');
-    o.value = sp.nome;
-    const data = sp.data ? ` · ${sp.data}` : '';
-    o.textContent = `${sp.nome.replace(/_/g,' ')}${data}`;
+// ── SPETTACOLI ──
+async function caricaSpettacoli(){
+  const r=await supa('GET','spettacoli',{params:'select=nome,ente,data,orario&order=nome'});
+  if(!r.ok||!r.data){setConn(false);document.getElementById('mappa-wrap').innerHTML='<div style="color:var(--red);padding:20px;text-align:center">❌ Errore connessione<br><button onclick="caricaSpettacoli()" style="background:#333;color:var(--accent);border:none;padding:8px 16px;border-radius:8px;cursor:pointer;margin-top:10px">↻ Riprova</button></div>';return;}
+  setConn(true);
+  const sel=document.getElementById('sel-spett');
+  const prec=sel.value;
+  sel.innerHTML='<option value="">— scegli uno spettacolo —</option>';
+  r.data.forEach(sp=>{
+    const o=document.createElement('option');
+    o.value=sp.nome;o.textContent=sp.nome.replace(/_/g,' ')+(sp.data?' · '+sp.data:'');
     sel.appendChild(o);
   });
-  if (prec) sel.value = prec;
+  if(prec)sel.value=prec;
+}
+function onSpettChange(){
+  spettAttu=document.getElementById('sel-spett').value;
+  if(spettAttu)caricaMappa();
+  else document.getElementById('mappa-wrap').innerHTML='<div style="text-align:center;color:var(--muted);padding:40px;font-size:.9em">Seleziona uno spettacolo</div>';
 }
 
-function onSpettChange() {
-  spettAttu = document.getElementById('sel-spett').value;
-  if (spettAttu) caricaMappa();
-  else {
-    document.getElementById('mappa-wrap').innerHTML =
-      '<div style="text-align:center;color:var(--muted);padding:40px;font-size:.9em">Seleziona uno spettacolo</div>';
-  }
+// ── MAPPA ──
+async function caricaMappa(){
+  if(!spettAttu)return;
+  setSyncSt('loading','Caricamento...');
+  const r=await supa('GET','prenotazioni',{params:`select=riga,colonna,nome_cliente,operatore&spettacolo=eq.${encodeURIComponent(spettAttu)}`});
+  if(!r.ok){setSyncSt('err','Errore connessione');setConn(false);return;}
+  setConn(true);await renderMappa(r.data||[]);
+  setSyncSt('ok',`${(r.data||[]).length} posti occupati · ${ora()}`);
+  const mx=await supa('GET','prenotazioni',{params:`select=id&spettacolo=eq.${encodeURIComponent(spettAttu)}&order=id.desc&limit=1`});
+  if(mx.ok&&mx.data&&mx.data.length)ultimoId=mx.data[0].id;
 }
 
-// ══════════════════════════════════════════════════════
-//  MAPPA
-// ══════════════════════════════════════════════════════
-async function caricaMappa() {
-  if (!spettAttu) return;
-  setSyncStatus('loading', 'Caricamento mappa...');
+async function renderMappa(preno){
+  const lay=await getLayout();
+  if(!lay){document.getElementById('mappa-wrap').innerHTML='<div style="color:var(--red);padding:20px;text-align:center">Layout non disponibile.<br>Il PC deve fare almeno un sync.</div>';return;}
+  letFila=lay.lettere;configFile=lay.config;
+  const lk={};preno.forEach(p=>{lk[`${p.riga},${p.colonna}`]={nome:p.nome_cliente,op:p.operatore};});
 
-  const r = await supa('GET', 'prenotazioni',
-    {params: `select=riga,colonna,nome_cliente,operatore&spettacolo=eq.${encodeURIComponent(spettAttu)}`});
+  const SPLIT=7; // A-G (0-6) | H-Q (7+)
+  let html='<div class="palco-label">P A L C O S C E N I C O</div>';
 
-  if (!r.ok) {
-    setSyncStatus('err', 'Errore caricamento — controlla connessione');
-    setConnStatus(false); return;
-  }
-  setConnStatus(true);
-
-  // Recupera layout dal DB (oppure usa fallback hardcoded compatibile con il PC)
-  await renderMappa(r.data || []);
-
-  const occ = r.data ? r.data.length : 0;
-  setSyncStatus('ok', `${occ} posti occupati · aggiornato ${ora()}`);
-
-  // Aggiorna ultimoId per polling delta
-  const ridMax = await supa('GET', 'prenotazioni',
-    {params: `select=id&spettacolo=eq.${encodeURIComponent(spettAttu)}&order=id.desc&limit=1`});
-  if (ridMax.ok && ridMax.data && ridMax.data.length)
-    ultimoId = ridMax.data[0].id;
-}
-
-async function renderMappa(prenotazioni) {
-  // Layout platea — deve corrispondere alla configurazione del PC
-  // Recupera configurazione layout dal DB se disponibile,
-  // altrimenti usa struttura standard
-  const lay = await getLayout();
-  if (!lay) {
-    document.getElementById('mappa-wrap').innerHTML =
-      '<div style="color:var(--red);padding:20px;text-align:center">Layout non disponibile.<br>Il PC deve fare almeno un sync.</div>';
-    return;
-  }
-
-  letFila = lay.lettere;
-  configFile = lay.config;
-
-  // Mappa prenotazioni in lookup rapido
-  const lookup = {};
-  prenotazioni.forEach(p => {
-    lookup[`${p.riga},${p.colonna}`] = {nome: p.nome_cliente, op: p.operatore};
-  });
-
-  let html = '';
-  letFila.forEach((let_, ri) => {
-    const {sx, dx} = configFile[ri];
-    html += `<div class="fila-row"><span class="fila-lbl">${let_}</span>`;
-    html += '<div class="posti-group">';
-    sx.forEach((num, ci) => {
-      const key = `${ri},${ci}`;
-      const preno = lookup[key];
-      const isMio = preno && preno.op === utente.username;
-      const cls = preno ? (isMio ? 'mio' : 'occupato') : 'libero';
-      const dis = preno ? ' disabled' : '';
-      const title = preno ? ` title="${preno.nome}"` : '';
-      html += `<button class="posto ${cls}"${dis}${title} onclick="clickPosto(${ri},${ci},'${let_}',${num})">${num}</button>`;
-    });
-    if (sx.length && dx.length) html += '<div class="gap-centrale"></div>';
-    dx.forEach((num, dxi) => {
-      const ci = sx.length + dxi;
-      const key = `${ri},${ci}`;
-      const preno = lookup[key];
-      const isMio = preno && preno.op === utente.username;
-      const cls = preno ? (isMio ? 'mio' : 'occupato') : 'libero';
-      const dis = preno ? ' disabled' : '';
-      const title = preno ? ` title="${preno.nome}"` : '';
-      html += `<button class="posto ${cls}"${dis}${title} onclick="clickPosto(${ri},${ci},'${let_}',${num})">${num}</button>`;
-    });
-    html += '</div></div>';
-  });
-
-  document.getElementById('mappa-wrap').innerHTML = html;
-}
-
-// Layout dal DB (salvato dal PC al primo sync)
-async function getLayout() {
-  const r = await supa('GET', 'spettacoli',
-    {params: `select=layout_json&nome=eq.${encodeURIComponent(spettAttu)}`});
-  if (!r.ok || !r.data || !r.data.length || !r.data[0].layout_json)
-    return getLayoutFallback();
-  try { return JSON.parse(r.data[0].layout_json); }
-  catch { return getLayoutFallback(); }
-}
-
-function getLayoutFallback() {
-  // Layout Teatro Antidoto reale (da screenshot)
-  const sx_ab = [19,17,15,13,11,9,7,5,3,1];
-  const dx_ab = [2,4,6,8,10,12,14,16,18,20];
-  const sx_cg = [21,19,17,15,13,11,9,7,5,3,1];
-  const dx_cg = [2,4,6,8,10,12,14,16,18,20,22];
-  const sx_pq = [19,17,15,13,11,9,7,5,3,1];
-  const dx_pq = [2,4,6,8,10,12,14,16,18,20,22];
-  const lettere = ['A','B','C','D','E','F','G','H','I','L','M','N','O','P','Q'];
-  const config = lettere.map(l => {
-    if(l==='A'||l==='B') return {sx:[...sx_ab],dx:[...dx_ab]};
-    if(l==='P'||l==='Q') return {sx:[...sx_pq],dx:[...dx_pq]};
-    return {sx:[...sx_cg],dx:[...dx_cg]};
-  });
-  return {lettere, config};
-}
-
-// ══════════════════════════════════════════════════════
-//  CLICK POSTO → DIALOG
-// ══════════════════════════════════════════════════════
-function clickPosto(r, c, fila, num) {
-  postoSel = {r, c, fila, num};
-  document.getElementById('dlg-spett').textContent =
-    spettAttu.replace(/_/g,' ');
-  document.getElementById('dlg-coord').textContent =
-    `Fila  ${fila}  —  Posto  ${num}`;
-  document.getElementById('dlg-nome').value = '';
-  document.getElementById('dlg-nome').style.borderColor = '#444';
-  document.getElementById('btn-confirm').disabled = false;
-  document.getElementById('overlay').classList.add('show');
-  setTimeout(() => document.getElementById('dlg-nome').focus(), 250);
-}
-
-function onOverlayClick(e) {
-  if (e.target === document.getElementById('overlay')) chiudiDialog();
-}
-function chiudiDialog() {
-  document.getElementById('overlay').classList.remove('show');
-  postoSel = null;
-}
-
-// ══════════════════════════════════════════════════════
-//  CONFERMA PRENOTAZIONE → SUPABASE
-// ══════════════════════════════════════════════════════
-async function confermaPosto() {
-  const nomeEl = document.getElementById('dlg-nome');
-  const nome = nomeEl.value.trim().toUpperCase();
-  if (!nome) {
-    nomeEl.style.borderColor = 'var(--red)';
-    nomeEl.classList.add('shake');
-    setTimeout(() => nomeEl.classList.remove('shake'), 400);
-    return;
-  }
-  const btn = document.getElementById('btn-confirm');
-  btn.disabled = true; btn.textContent = '⏳';
-
-  const {r, c, fila, num} = postoSel;
-  const row = {
-    spettacolo:   spettAttu,
-    fila:         fila,
-    posto:        String(num),
-    riga:         r,
-    colonna:      c,
-    nome_cliente: nome,
-    operatore:    utente.username,
-    confermato_pc: false
-  };
-
-  const res = await supa('POST', 'prenotazioni', {
-    body: row,
-    prefer: 'resolution=merge-duplicates,return=representation'
-  });
-
-  btn.disabled = false; btn.textContent = 'PRENOTA';
-
-  if (!res.ok) {
-    // Controlla se è già occupato
-    if (res.status === 409 || (res.data && JSON.stringify(res.data).includes('unique'))) {
-      toast('✘ Posto già occupato! Aggiorna la mappa.', false);
-    } else {
-      toast('✘ Errore connessione. Riprova.', false);
+  letFila.forEach((lt,ri)=>{
+    if(ri===SPLIT){
+      html+='<div class="platea-gap"><div class="platea-gap-line"></div><div class="platea-gap-lbl">· · ·</div><div class="platea-gap-line"></div></div>';
     }
-    chiudiDialog();
-    await caricaMappa();
-    return;
-  }
-
-  miePrenotazioni.add(`${r},${c}`);
-  chiudiDialog();
-  toast(`✔  Fila ${fila} Posto ${num} — ${nome}`, true);
-  await caricaMappa();
-}
-
-// ══════════════════════════════════════════════════════
-//  POLLING REAL-TIME (ogni 6s per nuove prenotazioni altrui)
-// ══════════════════════════════════════════════════════
-function avviaPolling() {
-  if (pollTimer) clearInterval(pollTimer);
-  pollTimer = setInterval(async () => {
-    if (!spettAttu) return;
-    const r = await supa('GET', 'prenotazioni',
-      {params: `select=id,riga,colonna,nome_cliente,operatore`
-             + `&spettacolo=eq.${encodeURIComponent(spettAttu)}`
-             + `&id=gt.${ultimoId}&order=id.asc&limit=20`});
-    if (!r.ok || !r.data || !r.data.length) return;
-    ultimoId = r.data[r.data.length-1].id;
-    // Aggiorna posti nella mappa senza ricaricare tutto
-    r.data.forEach(p => {
-      const btns = document.querySelectorAll('.posto');
-      // Aggiorna celle con nuovo stato
+    const{sx,dx}=configFile[ri];
+    html+=`<div class="fila-row"><span class="fila-lbl">${lt}</span><div class="posti-group">`;
+    sx.forEach((num,ci)=>{
+      const k=`${ri},${ci}`,pr=lk[k],mio=pr&&pr.op===utente.username;
+      const cls=pr?(mio?'mio':'occupato'):'libero';
+      html+=`<button class="posto ${cls}"${pr?' disabled':''}${pr?` title="${pr.nome}"`:''}onclick="clickPosto(${ri},${ci},'${lt}',${num})">${num}</button>`;
     });
-    await caricaMappa(); // ricarica completa se ci sono novità
-    setSyncStatus('ok', `Aggiornato ${ora()}`);
-  }, 6000);
+    if(sx.length&&dx.length)html+='<div class="gap-centrale"></div>';
+    dx.forEach((num,di)=>{
+      const ci=sx.length+di,k=`${ri},${ci}`,pr=lk[k],mio=pr&&pr.op===utente.username;
+      const cls=pr?(mio?'mio':'occupato'):'libero';
+      html+=`<button class="posto ${cls}"${pr?' disabled':''}${pr?` title="${pr.nome}"`:''}onclick="clickPosto(${ri},${ci},'${lt}',${num})">${num}</button>`;
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('mappa-wrap').innerHTML=html;
 }
 
-// ══════════════════════════════════════════════════════
-//  UI HELPERS
-// ══════════════════════════════════════════════════════
-function setSyncStatus(stato, txt) {
-  const dot = document.getElementById('sync-dot');
-  const lbl = document.getElementById('sync-txt');
-  dot.className = 'sync-dot ' + stato;
-  lbl.textContent = txt;
+async function getLayout(){
+  const r=await supa('GET','spettacoli',{params:`select=layout_json&nome=eq.${encodeURIComponent(spettAttu)}`});
+  if(!r.ok||!r.data||!r.data.length||!r.data[0].layout_json)return getLayoutFB();
+  try{return JSON.parse(r.data[0].layout_json);}catch{return getLayoutFB();}
+}
+function getLayoutFB(){
+  const s10=[19,17,15,13,11,9,7,5,3,1],d10=[2,4,6,8,10,12,14,16,18,20];
+  const s11=[21,19,17,15,13,11,9,7,5,3,1],d11=[2,4,6,8,10,12,14,16,18,20,22];
+  const l=['A','B','C','D','E','F','G','H','I','L','M','N','O','P','Q'];
+  return{lettere:l,config:l.map(x=>x==='A'||x==='B'?{sx:[...s10],dx:[...d10]}:x==='P'||x==='Q'?{sx:[...s10],dx:[...d11]}:{sx:[...s11],dx:[...d11]})};
 }
 
-function toast(msg, ok) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show ' + (ok ? 'ok' : 'ko');
-  setTimeout(() => t.className = 'toast', 2800);
+// ── PINCH ZOOM ──
+function initZoom(){
+  const outer=document.getElementById('mappa-outer');
+  const zoom=document.getElementById('mappa-zoom');
+  let sc=1,sd=0,ss=1,ox=0,oy=0;
+  outer.addEventListener('touchstart',e=>{
+    if(e.touches.length===2){
+      e.preventDefault();sd=dist(e.touches);ss=sc;
+      const rect=outer.getBoundingClientRect();
+      ox=(e.touches[0].clientX+e.touches[1].clientX)/2-rect.left;
+      oy=(e.touches[0].clientY+e.touches[1].clientY)/2-rect.top;
+    }
+  },{passive:false});
+  outer.addEventListener('touchmove',e=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      sc=Math.min(3.5,Math.max(0.6,ss*(dist(e.touches)/sd)));
+      zoom.style.transform=`scale(${sc})`;zoom.style.transformOrigin=`${ox}px ${oy}px`;
+    }
+  },{passive:false});
+  outer.addEventListener('touchend',e=>{
+    if(e.touches.length<2&&sc<0.85){sc=1;zoom.style.transform='scale(1)';zoom.style.transformOrigin='top left';}
+  });
+}
+function dist(t){return Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);}
+
+// ── DIALOG MANUALE ──
+function clickPosto(r,c,fila,num){
+  postoSel={r,c,fila,num};
+  document.getElementById('dlg-spett').textContent=spettAttu.replace(/_/g,' ');
+  document.getElementById('dlg-coord').textContent=`Fila  ${fila}  —  Posto  ${num}`;
+  document.getElementById('dlg-nome').value='';
+  document.getElementById('dlg-nome').style.borderColor='#444';
+  document.getElementById('btn-confirm').disabled=false;
+  document.getElementById('overlay').classList.add('show');
+  setTimeout(()=>document.getElementById('dlg-nome').focus(),250);
+}
+function onOverlayClick(e){if(e.target===document.getElementById('overlay'))chiudiDialog();}
+function chiudiDialog(){document.getElementById('overlay').classList.remove('show');postoSel=null;}
+async function confermaPosto(){
+  const el=document.getElementById('dlg-nome');
+  const nome=el.value.trim().toUpperCase();
+  if(!nome){el.style.borderColor='var(--red)';el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),400);return;}
+  const btn=document.getElementById('btn-confirm');btn.disabled=true;btn.textContent='⏳';
+  const{r,c,fila,num}=postoSel;
+  const res=await supa('POST','prenotazioni',{body:{spettacolo:spettAttu,fila,posto:String(num),riga:r,colonna:c,nome_cliente:nome,operatore:utente.username,confermato_pc:false},prefer:'resolution=merge-duplicates,return=representation'});
+  btn.disabled=false;btn.textContent='PRENOTA';
+  if(!res.ok){toast(res.status===409||(res.data&&JSON.stringify(res.data).includes('unique'))?'✘ Posto già occupato!':'✘ Errore connessione.',false);chiudiDialog();await caricaMappa();return;}
+  miePrenotazioni.add(`${r},${c}`);chiudiDialog();toast(`✔  Fila ${fila} Posto ${num} — ${nome}`,true);await caricaMappa();
 }
 
-function ora() {
-  const d = new Date();
-  return d.getHours().toString().padStart(2,'0') + ':' +
-         d.getMinutes().toString().padStart(2,'0');
+// ── ASSISTENTE VOCALE ──
+function apriVoce(){
+  vSpett=spettAttu||'';vFila='';vPosto=null;vR=-1;vC=-1;voiceStep=0;
+  document.getElementById('vi-spett').value=vSpett.replace(/_/g,' ');
+  document.getElementById('vi-fila').value='';
+  document.getElementById('vi-posto').value='';
+  document.getElementById('vi-nome').value='';
+  ['vi-spett','vi-fila','vi-posto','vi-nome'].forEach(id=>{
+    const el=document.getElementById(id);el.classList.remove('valid','invalid','cur');
+  });
+  ['sn1','sn2','sn3','sn4','sn5'].forEach(id=>{snum(id,'idle');});
+  document.getElementById('vstep-conf').style.display='none';
+  document.getElementById('vstep-nome').style.display='none';
+  document.getElementById('btn-vcommit').disabled=true;
+  document.getElementById('voice-backdrop').classList.add('show');
+  document.getElementById('voice-panel').classList.add('open');
+  if(vSpett)onInputSpett();
+  setTimeout(()=>{
+    if(vSpett){parla('Che fila?',()=>ascolta('fila'));}
+    else{parla('Che spettacolo?',()=>ascolta('spett'));}
+  },300);
+}
+function chiudiVoce(){
+  stopSR();TTS.cancel();
+  document.getElementById('voice-backdrop').classList.remove('show');
+  document.getElementById('voice-panel').classList.remove('open');
+  setTts('');setMicIco(false);
+  rimuoviHl();
 }
 
-// Enter nel dialog
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' &&
-      document.getElementById('overlay').classList.contains('show'))
-    confermaPosto();
-  if (e.key === 'Escape' &&
-      document.getElementById('overlay').classList.contains('show'))
-    chiudiDialog();
+// parla
+function parla(txt,onDone){
+  TTS.cancel();setTts(txt,true);
+  const u=new SpeechSynthesisUtterance(txt);u.lang='it-IT';u.rate=0.95;
+  u.onend=()=>{setTts('');if(onDone)onDone();};
+  u.onerror=()=>{setTts('');if(onDone)onDone();};
+  TTS.speak(u);
+}
+function setTts(txt,speaking){
+  const el=document.getElementById('tts-bar');
+  el.innerHTML=txt?`<span class="tts-dot"></span><span>${txt}</span>`:'';
+}
+
+// ascolta
+function ascolta(campo){
+  if(!SR){toast('⚠ Speech Recognition non disponibile su questo browser',false);return;}
+  stopSR();
+  const rm=document.getElementById('rm-'+campo);
+  if(rm)rm.classList.add('listening');
+  setMicIco(true);setTts('In ascolto...',true);
+  activeSR=new SR();activeSR.lang='it-IT';activeSR.interimResults=false;activeSR.maxAlternatives=3;
+  activeSR.onresult=e=>{
+    let t=e.results[0][0].transcript.trim();
+    if(campo==='fila')t=estraiLettera(t);
+    if(campo==='posto')t=estraiNumero(t);
+    if(campo==='nome')t=t.toUpperCase();
+    document.getElementById('vi-'+campo).value=t;
+    if(campo==='spett')onInputSpett();
+    if(campo==='fila')onInputFila();
+    if(campo==='posto')onInputPosto();
+    if(campo==='nome')aggiornaCommit();
+    stopSR();setTts('');setMicIco(false);
+  };
+  activeSR.onerror=e=>{stopSR();setTts('');setMicIco(false);if(e.error!=='aborted')toast('⚠ Non ho capito, riprova',false);};
+  activeSR.onend=()=>{setMicIco(false);setTts('');if(rm)rm.classList.remove('listening');};
+  activeSR.start();
+}
+function stopSR(){
+  if(activeSR){try{activeSR.abort();}catch(e){}activeSR=null;}
+  document.querySelectorAll('.btn-remic').forEach(b=>b.classList.remove('listening'));
+}
+function setMicIco(on){
+  const m=document.getElementById('mic-ico');if(m)m.textContent=on?'🔴':'🎙';
+  document.getElementById('btn-mic-top').classList.toggle('listening',on);
+}
+
+// estrai
+function estraiLettera(t){
+  return t.toUpperCase().replace(/^(FILA|LA\s+FILA|LETTERA)\s*/i,'').trim().match(/[A-Z]/)?.[0]||t.toUpperCase().charAt(0);
+}
+function estraiNumero(t){
+  const m={'uno':1,'due':2,'tre':3,'quattro':4,'cinque':5,'sei':6,'sette':7,'otto':8,'nove':9,'dieci':10,'undici':11,'dodici':12,'tredici':13,'quattordici':14,'quindici':15,'sedici':16,'diciassette':17,'diciotto':18,'diciannove':19,'venti':20,'ventuno':21,'ventidue':22};
+  const low=t.toLowerCase().trim();if(m[low])return String(m[low]);
+  return t.match(/\d+/)?.[0]||t;
+}
+
+// validazioni input
+function onInputSpett(){
+  const v=document.getElementById('vi-spett').value.trim();
+  const sel=document.getElementById('sel-spett');
+  const opts=Array.from(sel.options);
+  const found=opts.find(o=>o.value&&o.value.replace(/_/g,' ').toLowerCase().includes(v.toLowerCase())&&v.length>1);
+  const inp=document.getElementById('vi-spett');
+  if(found){
+    inp.classList.remove('invalid');inp.classList.add('valid');
+    vSpett=found.value;snum('sn1','done');
+    if(voiceStep===0){voiceStep=1;setTimeout(()=>parla('Spettacolo: '+found.value.replace(/_/g,' ')+'. Che fila?',()=>ascolta('fila')),200);}
+  }else{inp.classList.remove('valid');inp.classList.add('invalid');vSpett='';snum('sn1','active');}
+  aggiornaCommit();
+}
+
+function onInputFila(){
+  let v=document.getElementById('vi-fila').value.trim().toUpperCase().charAt(0);
+  document.getElementById('vi-fila').value=v;
+  const ok=v&&(letFila.length===0||letFila.includes(v));
+  const inp=document.getElementById('vi-fila');
+  if(ok){
+    inp.classList.remove('invalid');inp.classList.add('valid');
+    vFila=v;snum('sn2','done');
+    if(voiceStep===1){voiceStep=2;setTimeout(()=>parla('Fila '+v+'. Che numero di posto?',()=>ascolta('posto')),200);}
+  }else{inp.classList.remove('valid');inp.classList.add('invalid');vFila='';snum('sn2',v?'active':'idle');}
+  aggiornaCommit();
+}
+
+function onInputPosto(){
+  const v=parseInt(document.getElementById('vi-posto').value);
+  const inp=document.getElementById('vi-posto');
+  if(!vFila||!letFila.length){aggiornaCommit();return;}
+  const ri=letFila.indexOf(vFila);
+  const tutti=ri>=0?[...configFile[ri].sx,...configFile[ri].dx]:[];
+  if(!isNaN(v)&&tutti.includes(v)){
+    inp.classList.remove('invalid');inp.classList.add('valid');
+    vPosto=v;if(ri>=0){vR=ri;vC=tutti.indexOf(v);}
+    snum('sn3','done');
+    if(voiceStep===2){voiceStep=3;setTimeout(()=>avanzaConferma(),300);}
+  }else{inp.classList.remove('valid');inp.classList.add('invalid');vPosto=null;vR=-1;vC=-1;snum('sn3',!isNaN(v)?'active':'idle');}
+  aggiornaCommit();
+}
+
+async function avanzaConferma(){
+  if(vR<0||vC<0||!spettAttu)return;
+  const r=await supa('GET','prenotazioni',{params:`select=id&spettacolo=eq.${encodeURIComponent(spettAttu)}&riga=eq.${vR}&colonna=eq.${vC}&limit=1`});
+  if(r.ok&&r.data&&r.data.length){
+    parla('Il posto '+vPosto+' della fila '+vFila+' è già occupato. Scegli un altro numero.');
+    vPosto=null;vR=-1;vC=-1;document.getElementById('vi-posto').value='';
+    document.getElementById('vi-posto').classList.remove('valid');snum('sn3','idle');voiceStep=2;return;
+  }
+  hlPosto(vR,vC);
+  const msg=`Confermi di prenotare il posto ${vPosto} della fila ${vFila}?`;
+  document.getElementById('conf-msg').textContent=msg;
+  document.getElementById('vstep-conf').style.display='';snum('sn4','active');
+  parla(msg);
+}
+
+function voiceSi(){
+  voiceStep=4;
+  document.getElementById('vstep-conf').style.display='none';
+  document.getElementById('vstep-nome').style.display='';
+  snum('sn4','done');snum('sn5','active');
+  parla('Dimmi lentamente il cognome e il nome dello spettatore.',()=>ascolta('nome'));
+}
+function voiceNo(){
+  voiceStep=2;document.getElementById('vstep-conf').style.display='none';
+  vPosto=null;vR=-1;vC=-1;document.getElementById('vi-posto').value='';
+  document.getElementById('vi-posto').classList.remove('valid','invalid');
+  snum('sn3','idle');rimuoviHl();
+  parla('Ok, che numero di posto?',()=>ascolta('posto'));
+}
+
+async function voiceCommit(){
+  const nome=document.getElementById('vi-nome').value.trim().toUpperCase();
+  if(!nome){toast('⚠ Inserisci cognome e nome',false);return;}
+  const btn=document.getElementById('btn-vcommit');btn.disabled=true;btn.textContent='⏳';
+  const res=await supa('POST','prenotazioni',{body:{spettacolo:vSpett,fila:vFila,posto:String(vPosto),riga:vR,colonna:vC,nome_cliente:nome,operatore:utente.username,confermato_pc:false},prefer:'resolution=merge-duplicates,return=representation'});
+  btn.disabled=false;btn.textContent='PRENOTA';
+  if(!res.ok){toast('✘ Errore prenotazione',false);return;}
+  parla(`Prenotato. Fila ${vFila} posto ${vPosto} — ${nome}.`);
+  miePrenotazioni.add(`${vR},${vC}`);chiudiVoce();toast(`✔  Fila ${vFila} Posto ${vPosto} — ${nome}`,true);await caricaMappa();
+}
+
+function aggiornaCommit(){
+  const nome=document.getElementById('vi-nome').value.trim();
+  document.getElementById('btn-vcommit').disabled=!(vSpett&&vFila&&vPosto!==null&&vR>=0&&nome.length>1&&voiceStep>=4);
+}
+
+function snum(id,stato){
+  const el=document.getElementById(id);if(!el)return;
+  el.className='snum';
+  if(stato==='done')el.classList.add('done');
+  else if(stato==='active')el.classList.add('active');
+}
+
+function hlPosto(r,c){
+  rimuoviHl();
+  document.querySelectorAll('.posto').forEach(b=>{
+    const oc=b.getAttribute('onclick')||'';
+    const m=oc.match(/clickPosto\((\d+),(\d+)/);
+    if(m&&+m[1]===r&&+m[2]===c)b.classList.add('voice-target');
+  });
+}
+function rimuoviHl(){document.querySelectorAll('.posto.voice-target').forEach(b=>b.classList.remove('voice-target'));}
+
+// ── POLLING ──
+function avviaPolling(){
+  if(pollTimer)clearInterval(pollTimer);
+  pollTimer=setInterval(async()=>{
+    if(!spettAttu)return;
+    const r=await supa('GET','prenotazioni',{params:`select=id,riga,colonna,nome_cliente,operatore&spettacolo=eq.${encodeURIComponent(spettAttu)}&id=gt.${ultimoId}&order=id.asc&limit=20`});
+    if(!r.ok||!r.data||!r.data.length)return;
+    ultimoId=r.data[r.data.length-1].id;await caricaMappa();setSyncSt('ok','Aggiornato '+ora());
+  },6000);
+}
+
+// ── HELPERS ──
+function setSyncSt(s,t){document.getElementById('sync-dot').className='sync-dot '+s;document.getElementById('sync-txt').textContent=t;}
+function toast(msg,ok){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(ok?'ok':'ko');setTimeout(()=>t.className='toast',2800);}
+function ora(){const d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('overlay').classList.contains('show'))confermaPosto();
+  if(e.key==='Escape'&&document.getElementById('overlay').classList.contains('show'))chiudiDialog();
 });
 </script>
 </body>
