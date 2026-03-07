@@ -337,11 +337,13 @@ async function doLogin() {
   btn.textContent = 'ACCEDI'; btn.disabled = false;
 
   if (!r.ok) {
-    if (r.status === 404 || (r.data && JSON.stringify(r.data).includes('does not exist'))) {
-      errEl.textContent = '⚠ Database non ancora configurato. Esegui il SQL su Supabase.';
+    const msg = r.data ? JSON.stringify(r.data).substring(0,80) : ('HTTP ' + r.status);
+    if (msg.includes('does not exist') || r.status === 404) {
+      errEl.textContent = '⚠ Tabella utenti non trovata. Esegui supabase_fix.sql';
     } else {
-      errEl.textContent = 'Errore di connessione. Verifica la rete.';
+      errEl.textContent = '❌ Errore: ' + msg;
     }
+    console.error('Login error:', r);
     return;
   }
   if (!r.data || r.data.length === 0) {
@@ -373,12 +375,19 @@ document.addEventListener('keydown', e => {
 //  AVVIA APP
 // ══════════════════════════════════════════════════════
 async function avviaApp() {
-  show('pg-loading', false);
-  show('pg-app', true);
-  document.getElementById('lbl-utente').textContent = utente.username;
-  setConnStatus(true);
-  await caricaSpettacoli();
-  avviaPolling();
+  try {
+    show('pg-loading', false);
+    show('pg-app', true);
+    document.getElementById('lbl-utente').textContent = utente.username;
+    setConnStatus(false);
+    await caricaSpettacoli();
+    avviaPolling();
+  } catch(e) {
+    show('pg-app', false);
+    show('pg-login', true);
+    document.getElementById('login-err').textContent = 'Errore app: ' + e.message;
+    console.error('avviaApp error:', e);
+  }
 }
 
 function setConnStatus(online) {
@@ -393,7 +402,15 @@ function setConnStatus(online) {
 async function caricaSpettacoli() {
   const r = await supa('GET', 'spettacoli',
     {params: 'select=nome,ente,data,orario&attivo=eq.true&order=nome'});
-  if (!r.ok || !r.data) { setConnStatus(false); return; }
+  if (!r.ok || !r.data) {
+    setConnStatus(false);
+    document.getElementById('mappa-wrap').innerHTML =
+      '<div style="color:var(--red);padding:20px;text-align:center;font-size:.9em">'
+      + '❌ Errore connessione Supabase<br><small>' + (r.error||'HTTP '+r.status) + '</small>'
+      + '<br><br><button onclick="caricaSpettacoli()" style="background:#333;color:var(--accent);border:none;padding:8px 16px;border-radius:8px;cursor:pointer">↻ Riprova</button>'
+      + '</div>';
+    return;
+  }
   setConnStatus(true);
 
   const sel = document.getElementById('sel-spett');
