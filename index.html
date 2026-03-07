@@ -294,20 +294,19 @@ async function sha256hex(str) {
 //  INIT
 // ══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', async () => {
-  // Prova sessione salvata
+  // Mostra sempre il login entro 3 secondi, anche se la rete non risponde
+  const timer = setTimeout(() => {
+    show('pg-loading', false);
+    show('pg-login', true);
+  }, 3000);
+
   const saved = sessionStorage.getItem('teatro_utente');
-  try {
-    // Test connessione rapido
-    await fetch(`${SUPA_URL}/rest/v1/spettacoli?select=id&limit=1`, {
-      headers: {'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`}
-    });
-  } catch(e) {
-    // Continua comunque — mostrerà errore al login
-  }
   if (saved) {
+    clearTimeout(timer);
     utente = JSON.parse(saved);
     await avviaApp();
   } else {
+    clearTimeout(timer);
     show('pg-loading', false);
     show('pg-login', true);
   }
@@ -654,4 +653,3 @@ document.addEventListener('keydown', e => {
 </script>
 </body>
 </html>
-
