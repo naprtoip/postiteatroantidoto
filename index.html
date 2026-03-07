@@ -52,7 +52,7 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .login-footer{color:#2a2a3a;font-size:.65em;text-align:center;margin-top:24px}
 
 /* ── APP ── */
-#pg-app{display:none;min-height:100vh}
+#pg-app{min-height:100vh}
 
 /* ── SPETTACOLO SELECTOR ── */
 .section{padding:12px 14px}
@@ -401,7 +401,7 @@ function setConnStatus(online) {
 // ══════════════════════════════════════════════════════
 async function caricaSpettacoli() {
   const r = await supa('GET', 'spettacoli',
-    {params: 'select=nome,ente,data,orario&attivo=eq.true&order=nome'});
+    {params: 'select=nome,ente,data,orario&order=nome'});
   if (!r.ok || !r.data) {
     setConnStatus(false);
     document.getElementById('mappa-wrap').innerHTML =
