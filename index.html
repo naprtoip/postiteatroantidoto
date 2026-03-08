@@ -868,10 +868,13 @@ function onInputFila(){
 function onInputPosto(){
   const v=parseInt(document.getElementById('vi-posto').value);
   const inp=document.getElementById('vi-posto');
-  if(!vFila||!letFila.length){aggiornaCommit();return;}
+  if(!vFila){aggiornaCommit();return;}
 
-  const ri=letFila.indexOf(vFila);
-  const{sx,dx}=configFile[ri];
+  // fallback se letFila/configFile non ancora popolati
+  const lay=letFila.length>0?{lettere:letFila,config:configFile}:getLayoutFB();
+  const ri=lay.lettere.indexOf(vFila);
+  if(ri<0){aggiornaCommit();return;}
+  const{sx,dx}=lay.config[ri];
   const tutti=[...sx,...dx];
 
   if(isNaN(v)||!tutti.includes(v)){
