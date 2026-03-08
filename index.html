@@ -743,12 +743,32 @@ function setMicIco(on){
 
 // ── ESTRAI ──
 function estraiLettera(t){
-  // Parole → lettera
-  const map={alfa:'A',bravo:'B',charlie:'C',delta:'D',eco:'E',foxtrot:'F',golf:'G',hotel:'H',india:'I',lima:'L',mario:'M',novembre:'N',oscar:'O',papa:'P',quebec:'Q'};
+  // Nomi italiani delle lettere (STT italiano le trascrive così)
+  const nomiIT={
+    'acca':'H','elle':'L','emme':'M','enne':'N','effe':'F',
+    'gi':'G','ci':'C','pi':'P','bi':'B','di':'D',
+    'vu':'V','zeta':'Z','cu':'Q','cuu':'Q','qu':'Q',
+    'erre':'R','esse':'S','ti':'T','vi':'V'
+  };
+  // Alfabeto fonetico NATO
+  const nato={
+    'alfa':'A','alpha':'A','bravo':'B','charlie':'C','delta':'D',
+    'eco':'E','echo':'E','foxtrot':'F','golf':'G','hotel':'H',
+    'india':'I','juliet':'J','kilo':'K','lima':'L','mike':'M',
+    'november':'N','novembre':'N','oscar':'O','papa':'P',
+    'quebec':'Q','romeo':'R','sierra':'S','tango':'T',
+    'uniform':'U','victor':'V','whiskey':'W','x-ray':'X',
+    'yankee':'Y','zulu':'Z'
+  };
   const cl=t.toLowerCase().trim();
-  for(const[k,v]of Object.entries(map))if(cl.includes(k))return v;
-  // Prima lettera A-Z
-  const clean=t.toUpperCase().replace(/^(FILA|LA\s+FILA|LETTERA)\s*/i,'').trim();
+  // Prima prova nomi italiani (più lunghi prima per evitare falsi match)
+  for(const[k,v]of Object.entries(nomiIT))if(cl===k||cl===('fila '+k)||cl.startsWith(k+' ')||cl.endsWith(' '+k))return v;
+  for(const[k,v]of Object.entries(nomiIT))if(cl.includes(k))return v;
+  // Poi NATO
+  for(const[k,v]of Object.entries(nato))if(cl.includes(k))return v;
+  // Fallback: prima lettera A-Z dopo aver tolto prefissi comuni
+  const clean=t.toUpperCase()
+    .replace(/^(FILA|LA\s+FILA|LETTERA|LA\s+LETTERA)\s*/i,'').trim();
   return clean.match(/[A-Z]/)?.[0]||clean.charAt(0);
 }
 function estraiNumero(t){
