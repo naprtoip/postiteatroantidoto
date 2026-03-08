@@ -818,18 +818,29 @@ function onInputFila(){
 
   if(!v){inp.classList.remove('valid','invalid');vFila='';snum('sn3','idle');aggiornaCommit();return;}
 
-  if(!letFila.includes(v)){
+  // Se letFila non è ancora popolato (mappa non ancora renderizzata),
+  // usa il layout di fallback in modo che la voce funzioni comunque
+  const fileValide=letFila.length>0?letFila:getLayoutFB().lettere;
+
+  if(!fileValide.includes(v)){
     // ── FILA INESISTENTE ──
     inp.classList.remove('valid');inp.classList.add('invalid');vFila='';snum('sn3','active');
     if(voiceStep===2){
-      const disponibili=letFila.join(', ');
+      const disponibili=fileValide.join(', ');
       parla(`La fila ${v} non esiste in questo teatro. Le file disponibili sono: ${disponibili}. Che fila?`,()=>ascolta('fila'));
     }
     aggiornaCommit();return;
   }
 
   // Fila valida — controlla se completamente occupata
-  const ri=letFila.indexOf(v);
+  const ri=fileValide.indexOf(v);
+  // configFile potrebbe non essere popolato ancora — in quel caso salta il controllo posti
+  if(ri<0||!configFile.length){
+    // accetta comunque la fila, il controllo posti verrà fatto al passo successivo
+    inp.classList.remove('invalid');inp.classList.add('valid');vFila=v;snum('sn3','done');
+    if(voiceStep===2){voiceStep=3;setTimeout(()=>parla(`Fila ${v}. Che numero di posto?`,()=>ascolta('posto')),200);}
+    aggiornaCommit();return;
+  }
   const{sx,dx}=configFile[ri];
   const tutti=[...sx,...dx];
   const tuttiOccupati=tutti.every((_,ci)=>mappaLookup[`${ri},${ci}`]);
