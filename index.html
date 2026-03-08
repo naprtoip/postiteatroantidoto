@@ -78,7 +78,7 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
 
 .posto{width:30px;height:30px;border-radius:5px;border:none;margin:1px;font-size:.65em;font-weight:700;cursor:pointer;color:#000;transition:transform .1s,opacity .15s;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .posto:active{transform:scale(.86)}
-.posto.libero{background:var(--green)}.posto.occupato{background:var(--red);cursor:not-allowed;color:#fff;opacity:.85}
+.posto.libero{background:var(--green)}.posto.occupato{background:var(--red);color:#fff;opacity:.9}
 .posto.mio{background:var(--yellow)}.posto.voice-target{background:#a78bfa;animation:blink-p .5s infinite;color:#000}
 @keyframes blink-p{0%,100%{opacity:1}50%{opacity:.3}}
 
@@ -222,6 +222,29 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
     <div class="dlg-btns">
       <button class="btn-cancel" onclick="chiudiDialog()">Annulla</button>
       <button class="btn-confirm" id="btn-confirm" onclick="confermaPosto()">PRENOTA</button>
+    </div>
+  </div>
+</div>
+
+<!-- dialog cancellazione -->
+<div class="overlay" id="overlay-cancel" onclick="onCancelOverlayClick(event)">
+  <div class="dialog" id="dialog-cancel">
+    <div class="dialog-handle"></div>
+    <h3 style="color:var(--red)">🗑 Cancella prenotazione</h3>
+    <div class="posto-badge">
+      <div class="spett" id="canc-spett"></div>
+      <div class="coord" id="canc-coord"></div>
+    </div>
+    <div id="canc-nome-box" style="background:var(--bg);border:1.5px solid #555;border-radius:10px;padding:13px 14px;margin-bottom:14px;text-align:center">
+      <div style="color:var(--muted);font-size:.75em;margin-bottom:4px">PRENOTATO A NOME DI</div>
+      <div id="canc-nome" style="color:var(--yellow);font-size:1.1em;font-weight:700;letter-spacing:.5px"></div>
+    </div>
+    <div style="color:var(--muted);font-size:.8em;text-align:center;margin-bottom:14px">Confermi la cancellazione di questa prenotazione?</div>
+    <div class="dlg-btns">
+      <button class="btn-cancel" onclick="chiudiCancelDialog()">No, torna</button>
+      <button class="btn-confirm" id="btn-do-cancel"
+              style="background:var(--red);color:#fff"
+              onclick="eseguiCancellazione()">Sì, cancella</button>
     </div>
   </div>
 </div>
@@ -417,13 +440,15 @@ async function renderMappa(preno){
     sx.forEach((num,ci)=>{
       const k=`${ri},${ci}`,pr=lk[k],mio=pr&&pr.op===utente.username;
       const cls=pr?(mio?'mio':'occupato'):'libero';
-      html+=`<button class="posto ${cls}"${pr?' disabled':''}${pr?` title="${pr.nome}"`:''}onclick="clickPosto(${ri},${ci},'${lt}',${num})">${num}</button>`;
+      const clickFn=pr?`clickOccupato(${ri},${ci},'${lt}',${num})`:`clickPosto(${ri},${ci},'${lt}',${num})`;
+      html+=`<button class="posto ${cls}"${pr?` title="${pr.nome}"`:''}onclick="${clickFn}">${num}</button>`;
     });
     if(sx.length&&dx.length)html+='<div class="gap-centrale"></div>';
     dx.forEach((num,di)=>{
       const ci=sx.length+di,k=`${ri},${ci}`,pr=lk[k],mio=pr&&pr.op===utente.username;
       const cls=pr?(mio?'mio':'occupato'):'libero';
-      html+=`<button class="posto ${cls}"${pr?' disabled':''}${pr?` title="${pr.nome}"`:''}onclick="clickPosto(${ri},${ci},'${lt}',${num})">${num}</button>`;
+      const clickFn=pr?`clickOccupato(${ri},${ci},'${lt}',${num})`:`clickPosto(${ri},${ci},'${lt}',${num})`;
+      html+=`<button class="posto ${cls}"${pr?` title="${pr.nome}"`:''}onclick="${clickFn}">${num}</button>`;
     });
     html+='</div></div>';
   });
@@ -481,6 +506,52 @@ function clickPosto(r,c,fila,num){
 }
 function onOverlayClick(e){if(e.target===document.getElementById('overlay'))chiudiDialog();}
 function chiudiDialog(){document.getElementById('overlay').classList.remove('show');postoSel=null;}
+
+// ── CLICK POSTO OCCUPATO → DIALOG CANCELLAZIONE ──
+let cancelSel = null; // {r, c, fila, num, nome}
+
+function clickOccupato(r, c, fila, num) {
+  // Trova il nome dal markup (attributo title)
+  const btn = [...document.querySelectorAll('.posto.occupato,.posto.mio')].find(b => {
+    const oc = b.getAttribute('onclick') || '';
+    return oc.includes(`clickOccupato(${r},${c},`);
+  });
+  const nome = btn ? (btn.getAttribute('title') || '?') : '?';
+  cancelSel = {r, c, fila, num, nome};
+  document.getElementById('canc-spett').textContent = spettAttu.replace(/_/g,' ');
+  document.getElementById('canc-coord').textContent = `Fila  ${fila}  —  Posto  ${num}`;
+  document.getElementById('canc-nome').textContent = nome;
+  document.getElementById('btn-do-cancel').disabled = false;
+  document.getElementById('btn-do-cancel').textContent = 'Sì, cancella';
+  document.getElementById('overlay-cancel').classList.add('show');
+}
+function onCancelOverlayClick(e) {
+  if (e.target === document.getElementById('overlay-cancel')) chiudiCancelDialog();
+}
+function chiudiCancelDialog() {
+  document.getElementById('overlay-cancel').classList.remove('show');
+  cancelSel = null;
+}
+async function eseguiCancellazione() {
+  if (!cancelSel) return;
+  const {r, c} = cancelSel;
+  const btn = document.getElementById('btn-do-cancel');
+  btn.disabled = true; btn.textContent = '⏳';
+  const res = await supa('DELETE', 'prenotazioni', {
+    params: `spettacolo=eq.${encodeURIComponent(spettAttu)}&riga=eq.${r}&colonna=eq.${c}`,
+    prefer: ''
+  });
+  btn.disabled = false; btn.textContent = 'Sì, cancella';
+  if (!res.ok && res.status !== 204 && res.status !== 200) {
+    toast('✘ Errore cancellazione. Riprova.', false);
+    chiudiCancelDialog(); return;
+  }
+  const {fila, num, nome} = cancelSel;
+  miePrenotazioni.delete(`${r},${c}`);
+  chiudiCancelDialog();
+  toast(`✔  Cancellato: Fila ${fila} Posto ${num} — ${nome}`, true);
+  await caricaMappa();
+}
 async function confermaPosto(){
   const el=document.getElementById('dlg-nome');
   const nome=el.value.trim().toUpperCase();
