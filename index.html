@@ -914,9 +914,10 @@ function onInputPosto(){
 }
 
 async function avanzaConferma(){
-  if(vR<0||vC<0||!spettAttu)return;
+  const spett=vSpett||spettAttu;
+  if(vR<0||vC<0||!spett)return;
   // Doppio controllo real-time su Supabase
-  const r=await supa('GET','prenotazioni',{params:`select=id,nome_cliente&spettacolo=eq.${encodeURIComponent(spettAttu)}&riga=eq.${vR}&colonna=eq.${vC}&limit=1`});
+  const r=await supa('GET','prenotazioni',{params:`select=id,nome_cliente&spettacolo=eq.${encodeURIComponent(spett)}&riga=eq.${vR}&colonna=eq.${vC}&limit=1`});
   if(r.ok&&r.data&&r.data.length){
     const chi=r.data[0].nome_cliente;
     parla(`Attenzione! Il posto ${vPosto} della fila ${vFila} è appena stato occupato da ${chi}. Aggiorno la mappa. Scegli un altro numero.`,()=>ascolta('posto'));
@@ -986,7 +987,7 @@ async function voiceCommit(){
   let ok=0,err=0;
   for(const p of vodaCoda){
     const res=await supa('POST','prenotazioni',{
-      body:{spettacolo:vSpett,fila:p.fila,posto:String(p.num),riga:p.r,colonna:p.c,
+      body:{spettacolo:vSpett||spettAttu,fila:p.fila,posto:String(p.num),riga:p.r,colonna:p.c,
             nome_cliente:vNome,operatore:utente.username,confermato_pc:false},
       prefer:'resolution=merge-duplicates,return=representation'
     });
@@ -1018,7 +1019,7 @@ function rimuoviDaCoda(i){
 }
 
 function aggiornaCommit(){
-  const ok=vSpett&&vNome&&vodaCoda.length>0;
+  const ok=(vSpett||spettAttu)&&vNome&&vodaCoda.length>0;
   document.getElementById('btn-vcommit').disabled=!ok;
 }
 
