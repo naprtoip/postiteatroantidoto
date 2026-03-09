@@ -290,6 +290,12 @@ select.sel{width:100%;background:var(--card);border:1px solid #444;border-radius
 <div class="voice-panel" id="voice-panel">
   <div class="vp-handle"></div>
   <div class="vp-title"><span class="mic-ico" id="mic-ico">🎙</span> Prenotazione guidata vocale</div>
+  <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+    <select id="sel-voce" style="flex:1;background:#18182a;border:1px solid #444;border-radius:8px;color:var(--text);font-size:.78em;padding:7px 10px;outline:none;cursor:pointer" onchange="cambiaVoce()">
+      <option value="">🔊 Voce di sistema (default)</option>
+    </select>
+    <button class="btn-remic" style="padding:7px 9px;font-size:.85em" onclick="testVoce()" title="Ascolta anteprima">▶</button>
+  </div>
   <div class="tts-bar" id="tts-bar"></div>
 
   <!-- coda posti già aggiunti -->
@@ -380,6 +386,54 @@ let vodaCoda=[];   // [{r,c,fila,num}] posti confermati in coda
 let activeSR=null;
 const TTS=window.speechSynthesis;
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let voceSelezionata=null;
+
+function caricaVoci(){
+  const voci=TTS.getVoices();
+  if(!voci.length)return;
+  const sel=document.getElementById('sel-voce');
+  if(!sel)return;
+  sel.innerHTML='<option value="">🔊 Voce di sistema (default)</option>';
+  // Prima le italiane, poi le altre
+  const it=voci.filter(v=>v.lang.startsWith('it'));
+  const altre=voci.filter(v=>!v.lang.startsWith('it'));
+  if(it.length){
+    const grp=document.createElement('optgroup');grp.label='🇮🇹 Italiano';
+    it.forEach(v=>{
+      const o=document.createElement('option');
+      o.value=v.name;
+      const genere=v.name.toLowerCase().match(/female|woman|donna|alice|elsa|giulia|bianca|sofia|francesca|chiara|valentina/)?'♀':'♂';
+      o.textContent=`${genere} ${v.name} (${v.lang})${v.localService?' · locale':' · cloud'}`;
+      if(voceSelezionata&&voceSelezionata.name===v.name)o.selected=true;
+      grp.appendChild(o);
+    });
+    sel.appendChild(grp);
+  }
+  if(altre.length){
+    const grp=document.createElement('optgroup');grp.label='🌍 Altre lingue';
+    altre.slice(0,20).forEach(v=>{
+      const o=document.createElement('option');
+      o.value=v.name;o.textContent=`${v.name} (${v.lang})`;
+      grp.appendChild(o);
+    });
+    sel.appendChild(grp);
+  }
+}
+function cambiaVoce(){
+  const sel=document.getElementById('sel-voce');
+  const nome=sel.value;
+  voceSelezionata=nome?TTS.getVoices().find(v=>v.name===nome)||null:null;
+}
+function testVoce(){
+  TTS.cancel();
+  const u=new SpeechSynthesisUtterance('Ciao, sono la voce del Teatro Antidoto. Benvenuto!');
+  u.lang='it-IT';u.rate=0.92;u.pitch=1.05;
+  if(voceSelezionata)u.voice=voceSelezionata;
+  TTS.speak(u);
+}
+// Le voci si caricano in modo asincrono
+if(TTS.getVoices().length)caricaVoci();
+TTS.onvoiceschanged=caricaVoci;
 
 // ══════════════════════════════════════════════════════
 //  SUPABASE
@@ -658,6 +712,7 @@ function apriVoce(){
   document.getElementById('btn-vcommit').disabled=true;
   aggiornaCoda();
 
+  caricaVoci();
   document.getElementById('voice-backdrop').classList.add('show');
   document.getElementById('voice-panel').classList.add('open');
 
@@ -684,6 +739,7 @@ function chiudiVoce(){
 function parla(txt,onDone){
   TTS.cancel();setTts(txt,true);
   const u=new SpeechSynthesisUtterance(txt);u.lang='it-IT';u.rate=0.92;u.pitch=1.05;
+  if(voceSelezionata)u.voice=voceSelezionata;
   u.onend=()=>{setTts('');if(onDone)onDone();};
   u.onerror=()=>{setTts('');if(onDone)onDone();};
   TTS.speak(u);
